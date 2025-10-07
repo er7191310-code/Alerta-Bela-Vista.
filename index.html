@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>⚠️ Alerta Bela Vista ⚠️</title>
+</head>
+<body>
+  <h1>⚠️ Alerta Bela Vista ⚠️</h1>
+  <p>Esse é um teste de notificação com sirene de alerta.</p>
+
+  <!-- Botão -->
+  <button onclick="enviarNotificacao()">🚨 Ativar Alerta 🚨</button>
+  <button onclick="pararSom()">🔇 Parar Alerta</button>
+
+  <!-- Sirene -->
+  <audio id="alertaSom" src="https://www.soundjay.com/misc/sirens-01.mp3" loop></audio> 
+
+  <script>
+    function tocarSom() {
+      let som = document.getElementById("alertaSom");
+      som.volume = 1.0; // volume máximo
+      som.currentTime = 0; // reinicia do começo
+      som.play().catch((err) => {
+        console.log("Som bloqueado pelo navegador:", err);
+      });
+    }
+
+    function pararSom() {
+      let som = document.getElementById("alertaSom");
+      som.pause();
+      som.currentTime = 0;
+    }
+
+    function enviarNotificacao() {
+      // toca sirene
+      tocarSom();
+
+      if ("Notification" in window) {
+        Notification.requestPermission().then(function (permissao) {
+          if (permissao === "granted") {
+            new Notification("⚠️ Alerta Bela Vista ⚠️", {
+              body: "Atenção: risco identificado na sua região.",
+              icon: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Warning_icon.svg"
+            });
+          } else {
+            alert("⚠️ ALERTA BELA VISTA ⚠️\n\nAtenção: risco identificado na sua região.");
+          }
+        });
+      } else {
+        alert("⚠️ ALERTA BELA VISTA ⚠️\n\nAtenção: risco identificado na sua região.");
+      }
+    }
+  </script>
+</body>
+</html>
